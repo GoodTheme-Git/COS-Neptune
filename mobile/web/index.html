@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b3a5a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Neptune">
+<title>COS Neptune Mobile</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="neptune.css">
+</head>
+<body>
+<div id="phone">
+  <canvas id="wall"></canvas>
+  <div id="home" class="layer">
+    <div id="pages"></div>
+    <div id="dots"></div>
+    <div id="dock" class="glass"></div>
+  </div>
+  <div id="windows" class="layer"></div>
+  <div id="recents" class="layer hidden"><div id="recents-strip"></div><div id="recents-empty">No recent apps</div><button id="recents-clear" class="glass pill">Close all</button></div>
+  <div id="statusbar" class="glass-bar">
+    <span id="sb-time">--:--</span>
+    <span id="sb-title">COS</span>
+    <span id="sb-icons"><span id="sb-ibbs" class="hidden" title="IBBS">✉</span><span id="sb-net">▲</span><span id="sb-batt"></span></span>
+  </div>
+  <div id="shade" class="layer hidden">
+    <div id="shade-panel" class="glass">
+      <div class="shade-head"><span id="shade-clock"></span><span id="shade-date"></span></div>
+      <div id="toggles"></div>
+      <div class="shade-row"><span>☀</span><input type="range" id="bright" min="25" max="100" value="100"></div>
+      <div id="swatches"></div>
+      <div class="shade-sub">Notifications <button id="notes-clear" class="link">Clear</button></div>
+      <div id="notes"></div>
+      <div class="shade-grip"></div>
+    </div>
+  </div>
+  <div id="navbar" class="glass-bar">
+    <button id="nav-back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg></button>
+    <button id="nav-home" aria-label="Home"><span class="orb"></span></button>
+    <button id="nav-recents" aria-label="Recent apps"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
+  </div>
+  <div id="toast" class="glass hidden"></div>
+  <div id="dim"></div>
+  <div id="lock" class="layer hidden">
+    <div id="lock-time"></div>
+    <div id="lock-date"></div>
+    <div id="lock-notes"></div>
+    <div id="lock-pin" class="hidden"><div id="pin-dots"></div><div id="pin-pad"></div><button id="pin-cancel" class="link">Cancel</button></div>
+    <div id="lock-hint"><span class="chev">︿</span><br>Swipe up to unlock</div>
+  </div>
+  <div id="boot" class="layer">
+    <div class="boot-orb"></div>
+    <div class="boot-name">COS NEPTUNE <span>MOBILE</span></div>
+    <div class="boot-dots"><i></i><i></i><i></i><i></i><i></i></div>
+    <div id="boot-build"></div>
+  </div>
+  <div id="power" class="layer hidden"></div>
+</div>
+<script src="neptune.js"></script>
+<script src="apps.js"></script>
+</body>
+</html>

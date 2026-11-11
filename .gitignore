@@ -1,0 +1,7 @@
+# personal data, backups and generated files stay on the computer
+home/
+old/
+claude/
+__pycache__/
+*.pyc
+mobile/android/build/

@@ -1,0 +1,79 @@
+"""Bubbles: a sample Neptune app. Glass bubbles float up; click to pop them.
+
+Edit this file (App Manager > Edit) and save. Neptune reloads it by itself."""
+import math
+import random
+import time
+
+NEPAPP = {
+    'name':        'Bubbles',
+    'icon':        'neptune',
+    'version':     '1.0',
+    'author':      'COS',
+    'description': 'Pop the glass bubbles before they float away. A sample app: '
+                   'open it in Notepad to see how Neptune apps are made.',
+    'desktop':     True,
+}
+
+
+class App(neptune.App):
+    title = 'Bubbles'
+    size = (420, 480)
+    dark_client = True
+
+    def __init__(self, shell, **kw):
+        super().__init__(shell, **kw)
+        self.bubbles = []
+        self.pops = []
+        self.score = 0
+        self.missed = 0
+        self.last = time.time()
+        self.spawn_t = 0
+
+    live = True          # ask Neptune for smooth frames while open
+
+    def on_tick(self, now):
+        dt = min(0.05, now - self.last)
+        self.last = now
+        w, h = self.client_size
+        if now - self.spawn_t > max(0.35, 1.2 - self.score * 0.02):
+            self.spawn_t = now
+            r = random.randint(14, 34)
+            self.bubbles.append([random.uniform(r, w - r), h + r, r, random.uniform(40, 90) + self.score,
+                                 random.random() * 6.28])
+        for b in self.bubbles:
+            b[1] -= b[3] * dt
+            b[4] += dt * 2
+        gone = [b for b in self.bubbles if b[1] < -b[2]]
+        self.missed += len(gone)
+        self.bubbles = [b for b in self.bubbles if b[1] >= -b[2]]
+        self.pops = [p for p in self.pops if now - p[3] < 0.35]
+        return True
+
+    def draw(self, img, ui):
+        gfx = neptune.gfx
+        w, h = img.size
+        img.alpha_composite(gfx.vgradient(w, h, ((0, (10, 60, 90)), (1, (2, 12, 30)))), (0, 0))
+        tint = tuple(self.shell.settings.get('glass_rgb', [38, 150, 160]))
+        for x, y, r, _sp, ph in self.bubbles:
+            x += math.sin(ph) * 6
+            g = gfx.radial(r * 2, r * 2, ((0, tint + (40,)), (0.8, tint + (90,)), (0.95, (220, 250, 255, 200)),
+                                          (1, (0, 0, 0, 0))))
+            img.alpha_composite(g, (int(x - r), int(y - r)))
+            ui.d.ellipse((x - r * 0.55, y - r * 0.65, x - r * 0.05, y - r * 0.3), fill=(255, 255, 255, 120))
+        now = time.time()
+        for x, y, r, t0 in self.pops:
+            k = (now - t0) / 0.35
+            rr = r * (1 + k)
+            ui.d.ellipse((x - rr, y - rr, x + rr, y + rr), outline=(220, 250, 255, int(200 * (1 - k))), width=2)
+        ui.text((14, 14), 'Popped: %d' % self.score, 14, bold=True, color=(230, 250, 255))
+        ui.text((w - 14, 14), 'Missed: %d' % self.missed, 12, color=(150, 200, 220), anchor='ra')
+
+    def on_down(self, cid, kind, data, x, y, button):
+        for b in reversed(self.bubbles):
+            bx = b[0] + math.sin(b[4]) * 6
+            if (x - bx) ** 2 + (y - b[1]) ** 2 <= b[2] ** 2:
+                self.bubbles.remove(b)
+                self.pops.append((bx, b[1], b[2], time.time()))
+                self.score += 1
+                return
