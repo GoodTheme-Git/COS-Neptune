@@ -1,4 +1,4 @@
-# COS Neptune — COS 3.1 "Neptune"
+# COS Neptune — COS 3.1 "Neptune" (still not fully uploaded.)
 
 The Aero release of COS. Everything is drawn by Neptune itself through **GDR
 (Graphics Desktop Rendering)**. There's no curses underneath, and no X or
